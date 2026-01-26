@@ -1,3 +1,5 @@
+AAGGEEEE
+
 To help you excel in your Web Dev II Final Project, here is the finalized README.md tailored to the evaluation rubric. This document clearly defines your problem statement, technical depth, and compliance with the "no frameworks" rule.
 
 AAGGEEE: Long-Term Growth Tracker
