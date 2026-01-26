@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAGGEEE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <h2>New Goal</h2>
+            <form id="habit-form">
+                <input type="text" id="habit-name" placeholder="Habit Name..." required>
+                <div class="range-box">
+                    <label>Start: <input type="date" id="start-date" required></label>
+                    <label>End: <input type="date" id="end-date" required></label>
+                </div>
+                <button type="submit" class="btn-primary">Add to All Days</button>
+            </form>
+            <div class="stats">
+                <p>Completion: <span id="stat-percent">0%</span></p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="cal-header">
+                <button id="prevMonth">&lt;</button>
+                <h2 id="monthLabel">Month</h2>
+                <button id="nextMonth">&gt;</button>
+            </header>
+            <div id="calendarGrid" class="calendar-grid"></div>
+            
+            <div class="daily-view">
+                <h3 id="view-date-label">Select a Date</h3>
+                <div id="habit-list"></div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
