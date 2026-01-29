@@ -1,21 +1,31 @@
-let db = JSON.parse(localStorage.getItem('AAGGEEE')) || {};
-let activeDate = new Date().toISOString().split('T')[0];
+let db = JSON.parse(localStorage.getItem('ZenHabit_Final')) || {};
+let activeDate = formatDateLocal(new Date());
 let viewMonth = new Date();
 
-// 1. BULK ADD LOGIC
+// Helper to format date correctly without UTC offset issues
+function formatDateLocal(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
+// 1. FIXED BULK ADD LOGIC
 document.getElementById('habit-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const name = document.getElementById('habit-name').value;
-    const start = new Date(document.getElementById('start-date').value);
-    const end = new Date(document.getElementById('end-date').value);
+    
+    // Create dates manually to avoid timezone shifting
+    const startParts = document.getElementById('start-date').value.split('-');
+    const endParts = document.getElementById('end-date').value.split('-');
+    
+    let current = new Date(startParts[0], startParts[1]-1, startParts[2]);
+    const end = new Date(endParts[0], endParts[1]-1, endParts[2]);
 
-    // Loop through every day in range
-    let current = new Date(start);
     while (current <= end) {
-        let dateKey = current.toISOString().split('T')[0];
+        let dateKey = formatDateLocal(current);
         if (!db[dateKey]) db[dateKey] = [];
         
-        // Prevent duplicates
         if (!db[dateKey].find(h => h.name === name)) {
             db[dateKey].push({ name: name, done: false });
         }
@@ -24,10 +34,9 @@ document.getElementById('habit-form').addEventListener('submit', (e) => {
 
     save();
     e.target.reset();
-    alert("Habit added to all days in range!");
 });
 
-// 2. RENDER CALENDAR
+// 2. RENDER CALENDAR (DOM Manipulation)
 function renderCalendar() {
     const grid = document.getElementById('calendarGrid');
     grid.innerHTML = '';
@@ -44,7 +53,7 @@ function renderCalendar() {
 
     for (let d = 1; d <= days; d++) {
         const dObj = new Date(y, m, d);
-        const dKey = dObj.toISOString().split('T')[0];
+        const dKey = formatDateLocal(dObj);
         const cell = document.createElement('div');
         cell.className = `day ${dKey === activeDate ? 'selected' : ''}`;
         cell.innerText = d;
@@ -78,7 +87,7 @@ function renderHabits() {
 }
 
 window.toggle = (i) => { db[activeDate][i].done = !db[activeDate][i].done; save(); };
-function save() { localStorage.setItem('AAGGEEE', JSON.stringify(db)); refresh(); }
+function save() { localStorage.setItem('ZenHabit_Final', JSON.stringify(db)); refresh(); }
 function refresh() { renderCalendar(); renderHabits(); }
 
 document.getElementById('prevMonth').onclick = () => { viewMonth.setMonth(viewMonth.getMonth()-1); refresh(); };
